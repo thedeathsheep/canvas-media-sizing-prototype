@@ -62,3 +62,15 @@ test("rejects non-positive and non-finite dimensions", () => {
     assert.throws(() => getNormalizedMediaSize(...pair), /positive finite/);
   }
 });
+
+test("only media nodes receive alternate display dimensions", async () => {
+  const { DEMO_NODES } = await import("../src/demoData.js");
+  const media = DEMO_NODES.filter((node) => node.kind === "media");
+  const fixed = DEMO_NODES.filter((node) => node.kind !== "media");
+
+  assert.equal(media.length, 4);
+  assert.deepEqual(fixed.map(({ width, height }) => [width, height]), [
+    [320, 248],
+    [280, 180],
+  ]);
+});
