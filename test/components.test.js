@@ -3,7 +3,29 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { test } from "vitest";
 import { App } from "../src/App.jsx";
-import { MediaNode, ProcessNode, TextNode } from "../src/components.jsx";
+import { CanvasPane, MediaNode, ProcessNode, TextNode } from "../src/components.jsx";
+
+function extractNodeRectangles(html) {
+  return [...html.matchAll(/<button[^>]*style="([^"]+)"[^>]*data-node-id="([^"]+)"/g)].map((match) => {
+    const values = Object.fromEntries(
+      [...match[1].matchAll(/(left|top|width|height):([\d.]+)(?:px)?/g)].map((entry) => [entry[1], Number(entry[2])]),
+    );
+    return {
+      id: match[2],
+      x: values.left,
+      y: values.top,
+      width: values.width,
+      height: values.height,
+    };
+  });
+}
+
+function rectanglesOverlap(a, b) {
+  return a.x < b.x + b.width
+    && a.x + a.width > b.x
+    && a.y < b.y + b.height
+    && a.y + a.height > b.y;
+}
 
 test("media node exposes source and display dimensions without resize affordances", () => {
   const node = {
@@ -60,4 +82,29 @@ test("app renders raw and normalized panes from one comparison state", () => {
   assert.match(html, /同步视口/);
   assert.equal((html.match(/data-node-id="text-brief"/g) ?? []).length, 2);
   assert.equal((html.match(/data-node-id="process-generate"/g) ?? []).length, 2);
+});
+
+test("raw canvas starts with a collision-free node layout", () => {
+  const html = renderToStaticMarkup(createElement(CanvasPane, {
+    mode: "raw",
+    camera: { x: 28, y: 30, scale: 1 },
+    selectedId: "video-landscape",
+    onSelect: () => {},
+    onPointerDown: () => {},
+    onPointerMove: () => {},
+    onPointerUp: () => {},
+    onWheel: () => {},
+  }));
+  const rectangles = extractNodeRectangles(html);
+
+  assert.equal(rectangles.length, 6);
+  for (let index = 0; index < rectangles.length; index += 1) {
+    for (let otherIndex = index + 1; otherIndex < rectangles.length; otherIndex += 1) {
+      assert.equal(
+        rectanglesOverlap(rectangles[index], rectangles[otherIndex]),
+        false,
+        `${rectangles[index].id} overlaps ${rectangles[otherIndex].id}`,
+      );
+    }
+  }
 });

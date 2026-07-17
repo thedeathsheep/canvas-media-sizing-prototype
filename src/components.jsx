@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { DEMO_NODES } from "./demoData.js";
 import { formatDimensions, getMediaDisplaySize } from "./mediaSizing.js";
+import { getCanvasLayout } from "./nodeLayout.js";
 
 const VIEW_OPTIONS = [
   { id: "compare", label: "并排对比" },
@@ -172,6 +173,7 @@ export function CanvasPane({
   onWheel,
 }) {
   const isRaw = mode === "raw";
+  const layout = getCanvasLayout(DEMO_NODES, mode);
   const title = isRaw ? "原始像素放置" : "舒适展示规则";
   const description = isRaw
     ? "高分辨率媒体占据大量画布空间，固定节点的相对权重被压低。"
@@ -208,12 +210,15 @@ export function CanvasPane({
           style={{ transform: `translate(${camera.x}px, ${camera.y}px) scale(${camera.scale})` }}
         >
           {DEMO_NODES.map((node) => {
-            const size = node.kind === "media"
-              ? getMediaDisplaySize(node, mode)
-              : { width: node.width, height: node.height, scale: 1 };
+            const frame = layout[node.id];
+            const size = {
+              width: frame.width,
+              height: frame.height,
+              scale: frame.scale,
+            };
             const style = {
-              left: node.x,
-              top: node.y,
+              left: frame.x,
+              top: frame.y,
               width: size.width,
               height: size.height,
             };
