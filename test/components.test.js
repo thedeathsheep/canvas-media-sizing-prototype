@@ -45,7 +45,10 @@ test("text and process nodes keep fixed semantic surfaces", () => {
   }));
 
   assert.match(textHtml, /text-node__body/);
-  assert.match(processHtml, /开始生成/);
+  assert.match(processHtml, /步骤 1/);
+  assert.match(processHtml, /已就绪/);
+  assert.match(processHtml, /步骤 2/);
+  assert.match(processHtml, /待生成/);
   assert.match(processHtml, /参考素材 \+ 镜头意图/);
 });
 

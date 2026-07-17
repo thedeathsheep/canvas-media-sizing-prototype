@@ -7,7 +7,6 @@ import {
   Maximize2,
   Minimize2,
   MousePointer2,
-  Play,
   Sparkles,
   TextCursorInput,
   Video,
@@ -153,7 +152,10 @@ export function ProcessNode({ node, style, selected, onSelect }) {
         <span className="status-pill">可运行</span>
       </span>
       <span className="process-node__subtitle">{node.subtitle}</span>
-      <span className="process-node__action"><Play size={14} fill="currentColor" />开始生成</span>
+      <span className="process-node__steps">
+        <span><i className="step-dot step-dot--ready" /><b>步骤 1</b><em>已就绪</em></span>
+        <span><i className="step-dot step-dot--waiting" /><b>步骤 2</b><em>待生成</em></span>
+      </span>
       <span className="process-node__footer">固定 280 × 180</span>
     </button>
   );

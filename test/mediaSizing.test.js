@@ -74,3 +74,13 @@ test("only media nodes receive alternate display dimensions", async () => {
     [280, 180],
   ]);
 });
+
+test("places fixed nodes beneath the primary media in the initial viewport", async () => {
+  const { DEMO_NODES, INITIAL_CAMERA } = await import("../src/demoData.js");
+  const textNode = DEMO_NODES.find((node) => node.id === "text-brief");
+  const processNode = DEMO_NODES.find((node) => node.id === "process-generate");
+
+  assert.deepEqual(INITIAL_CAMERA, { x: 28, y: 30, scale: 1 });
+  assert.deepEqual([textNode.x, textNode.y], [0, 430]);
+  assert.deepEqual([processNode.x, processNode.y], [340, 430]);
+});

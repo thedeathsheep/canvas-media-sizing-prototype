@@ -1,4 +1,4 @@
-export const INITIAL_CAMERA = Object.freeze({ x: 28, y: 92, scale: 1 });
+export const INITIAL_CAMERA = Object.freeze({ x: 28, y: 30, scale: 1 });
 
 export const DEMO_NODES = Object.freeze([
   {
@@ -21,7 +21,7 @@ export const DEMO_NODES = Object.freeze([
     sourceWidth: 1080,
     sourceHeight: 1920,
     x: 0,
-    y: 520,
+    y: 740,
   },
   {
     id: "image-square",
@@ -32,7 +32,7 @@ export const DEMO_NODES = Object.freeze([
     sourceWidth: 2048,
     sourceHeight: 2048,
     x: 390,
-    y: 520,
+    y: 740,
   },
   {
     id: "image-panorama",
@@ -43,7 +43,7 @@ export const DEMO_NODES = Object.freeze([
     sourceWidth: 4096,
     sourceHeight: 1024,
     x: 0,
-    y: 920,
+    y: 1400,
   },
   {
     id: "text-brief",
@@ -52,8 +52,8 @@ export const DEMO_NODES = Object.freeze([
     body: "傍晚的城市街口，镜头保持平视。角色从画面左侧进入，在霓虹反射最亮的位置短暂停留。画面需要保留真实街景的层次，同时让角色轮廓清晰可辨。",
     width: 320,
     height: 248,
-    x: 680,
-    y: 0,
+    x: 0,
+    y: 430,
   },
   {
     id: "process-generate",
@@ -62,7 +62,7 @@ export const DEMO_NODES = Object.freeze([
     subtitle: "参考素材 + 镜头意图",
     width: 280,
     height: 180,
-    x: 680,
-    y: 300,
+    x: 340,
+    y: 430,
   },
 ]);
